@@ -1,7 +1,10 @@
+import java.nio.file.Paths
+
 import com.neuronrobotics.bowlerstudio.vitamins.Vitamins
 import com.neuronrobotics.nrconsole.util.FileSelectionFactory
 
 import eu.mihosoft.vrl.v3d.CSG
+import eu.mihosoft.vrl.v3d.FileUtil
 
 //Your code here
 File directory = FileSelectionFactory.GetDirectory(new File("."))
@@ -24,5 +27,10 @@ for(int i=0;i<stls.size()-1;i++) {
 	CSG section = stls[i].union(stls[i+1]).hull()
 	hulls.add(section)
 }
-
-return CSG.unionAll(hulls)
+println "Making fullCrossSection, this could take some time..."
+CSG finalPart= CSG.unionAll(hulls)
+String filename = directory.getAbsolutePath()+File.separator+"AllInOne.stl"
+FileUtil.write(Paths.get(filename),
+		finalPart.toStlString());
+println "STL EXPORT to "+filename
+return finalPart
