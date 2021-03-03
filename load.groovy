@@ -13,8 +13,9 @@ File directory = FileSelectionFactory.GetDirectory(new File("."))
 pathnames = directory.list();
 def stls = []
 // For each pathname in the pathnames array
+def name = "AllInOne.stl"
 for (String pathname : pathnames) {
-  if(pathname.toLowerCase().endsWith(".stl")) {
+  if(pathname.toLowerCase().endsWith(".stl")&&!pathname.contains(name)) {
 	  File stlFile = new File(directory.getAbsolutePath()+File.separator+pathname)
 	  stls.add(Vitamins.get(stlFile))
   }
@@ -29,7 +30,8 @@ for(int i=0;i<stls.size()-1;i++) {
 }
 println "Making fullCrossSection, this could take some time..."
 CSG finalPart= CSG.unionAll(hulls)
-String filename = directory.getAbsolutePath()+File.separator+"AllInOne.stl"
+
+String filename = directory.getAbsolutePath()+File.separator+name
 FileUtil.write(Paths.get(filename),
 		finalPart.toStlString());
 println "STL EXPORT to "+filename
